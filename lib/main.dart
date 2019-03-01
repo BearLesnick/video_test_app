@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:video_test_app/bloc/bloc_container.dart';
 import 'package:video_test_app/bloc/video_bloc.dart';
-import 'package:video_test_app/video_player_page.dart';
 import 'package:video_test_app/videos_list_page.dart';
 
 void main() => runApp(MyApp());

@@ -45,7 +45,7 @@ class VideoBloc {
   close() {
     _videosSubject.close();
   }
-
+//Mock method that emulates videos list fetching
   Future<List<Video>> _downloadVideos() async {
     return Future.delayed(Duration(seconds: 3), () {
       return [

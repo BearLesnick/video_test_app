@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:video_test_app/bloc/bloc_container.dart';
 import 'package:video_test_app/bloc/video_bloc.dart';
 import 'package:video_test_app/model/video.dart';
-import 'package:video_test_app/video_player_page.dart';
 
 class VideosListPage extends StatefulWidget {
   @override
