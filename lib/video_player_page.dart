@@ -25,7 +25,11 @@ class VideoPlayerState extends State<VideoPlayerPage> {
     super.initState();
     _controller = VideoPlayerController.network(widget.video.url)
       ..initialize().then((_) {
-        setState(() {});
+        setState(() {
+          _controller.play();
+          print("play started");
+        });
+
       });
   }
 
@@ -35,84 +39,82 @@ class VideoPlayerState extends State<VideoPlayerPage> {
     double _videoIndicatorSize = _screenWidth / 10 * 8;
     double _maxDeviceAspectRatio = MediaQuery.of(context).size.aspectRatio * 2;
     VideoBloc videoBloc = BlocContainer.of(context).videoBloc;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(widget.video.name),
-        ),
-        backgroundColor: Color.fromRGBO(224, 224, 224, 1.0),
-        body: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: _screenWidth,
-              child: Column(
-                children: <Widget>[
-                  Center(
-                    child: AspectRatio(
-                        aspectRatio: _controller.value.initialized
-                            ? _controller.value.aspectRatio
-                            : _maxDeviceAspectRatio,
-                        child: _controller.value.initialized
-                            ? VideoPlayer(_controller)
-                            : Container(
-                                child: Center(
-                                    child: Container(
-                                        height: 20.0,
-                                        width: 20.0,
-                                        child: CircularProgressIndicator())),
-                              )),
-                  ),
-                  Opacity(
-                    opacity: _controller.value.initialized ? 1.0 : 0.0,
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            IconButton(
-                              onPressed: () {
-                                videoBloc.playPreviousVideo(context);
-                              },
-                              icon: Icon(Icons.skip_previous),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  if (_controller.value.initialized) {
-                                    _controller.value.isPlaying
-                                        ? _controller.pause()
-                                        : _controller.play();
-                                  }
-                                });
-                              },
-                              icon: Icon(
-                                _controller.value.isPlaying
-                                    ? Icons.pause
-                                    : Icons.play_arrow,
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                videoBloc.playNextVideo(context);
-                              },
-                              icon: Icon(Icons.skip_next),
-                            ),
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        ),
-                        Container(
-                          width: _videoIndicatorSize,
-                          child: VideoProgressIndicator(
-                            _controller,
-                            allowScrubbing: true,
-                            padding: EdgeInsets.all(8.0),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.video.name),
+      ),
+      backgroundColor: Color.fromRGBO(224, 224, 224, 1.0),
+      body: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            width: _screenWidth,
+            child: Column(
+              children: <Widget>[
+                Center(
+                  child: AspectRatio(
+                      aspectRatio: _controller.value.initialized
+                          ? _controller.value.aspectRatio
+                          : _maxDeviceAspectRatio,
+                      child: _controller.value.initialized
+                          ? VideoPlayer(_controller)
+                          : Container(
+                              child: Center(
+                                  child: Container(
+                                      height: 20.0,
+                                      width: 20.0,
+                                      child: CircularProgressIndicator())),
+                            )),
+                ),
+                Opacity(
+                  opacity: _controller.value.initialized ? 1.0 : 0.0,
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          IconButton(
+                            onPressed: () {
+                              videoBloc.playPreviousVideo(context);
+                            },
+                            icon: Icon(Icons.skip_previous),
                           ),
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                if (_controller.value.initialized) {
+                                  _controller.value.isPlaying
+                                      ? _controller.pause()
+                                      : _controller.play();
+                                }
+                              });
+                            },
+                            icon: Icon(
+                              _controller.value.isPlaying
+                                  ? Icons.pause
+                                  : Icons.play_arrow,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              videoBloc.playNextVideo(context);
+                            },
+                            icon: Icon(Icons.skip_next),
+                          ),
+                        ],
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      ),
+                      Container(
+                        width: _videoIndicatorSize,
+                        child: VideoProgressIndicator(
+                          _controller,
+                          allowScrubbing: true,
+                          padding: EdgeInsets.all(8.0),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
